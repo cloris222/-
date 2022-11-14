@@ -248,19 +248,19 @@
       // 最高分
       let highscore = [
         {
-          name: storage[0]?.name || '',
-          time: storage[0]?.time || '',
-          date: storage[0]?.date || ''
+          name: storage[0]?.name || '無',
+          time: storage[0]?.time || '無',
+          date: storage[0]?.date || '無'
         },
         {
-          name: storage[1]?.name || '',
-          time: storage[1]?.time || '',
-          date: storage[1]?.date || ''
+          name: storage[1]?.name || '無',
+          time: storage[1]?.time || '無',
+          date: storage[1]?.date || '無'
         },
         {
-          name: storage[2]?.name || '',
-          time: storage[2]?.time || '',
-          date: storage[2]?.date || ''
+          name: storage[2]?.name || '無',
+          time: storage[2]?.time || '無',
+          date: storage[2]?.date || '無'
         }
       ]
 
@@ -358,7 +358,7 @@
 
               console.log('a1' + $('.text-time1').text())
               // 第一個玩家
-              if ($('.text-time1').text() === '') {
+              if ($('.text-time1').text() === '無') {
                 console.log('a1' + $('.text-time1').text())
                 // 儲存通關時間
                 const datestr = moment().format('L')
@@ -369,7 +369,7 @@
                 localStorage.setItem('cardgame', JSON.stringify(highscore))
               }
               // 第二個玩家
-              else if ($('.text-time2').text() === '') {
+              else if ($('.text-time2').text() === '無') {
                 // 儲存通關時間
                 const datestr = moment().format('L')
                 highscore[1].time = time.toFixed(1)
@@ -383,7 +383,7 @@
                 localStorage.setItem('cardgame', JSON.stringify(highscoresort))
               }
               // 第三個玩家
-              else if ($('.text-time3').text() === '') {
+              else if ($('.text-time3').text() === '無') {
                 // 儲存通關時間
                 const datestr = moment().format('L')
                 highscore[2].time = time.toFixed(1)
@@ -410,6 +410,7 @@
                 })
 
                 highscore.pop()
+
                 console.log(highscore)
 
                 localStorage.setItem('cardgame', JSON.stringify(highscore))
