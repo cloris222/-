@@ -199,19 +199,19 @@
               <td>紀錄時間</td>
             </tr>
             <tr>
-              <td><span class="text-highscorename1">從缺</span></td>
-              <td><span class="text-time1">-</span></td>
-              <td><span class="text-date1">-</span></td>
+              <td><span class="text-highscorename1">無</span></td>
+              <td><span class="text-time1">無</span></td>
+              <td><span class="text-date1">無</span></td>
             </tr>
             <tr>
-              <td><span class="text-highscorename2">從缺</span></td>
-              <td><span class="text-time2">-</span></td>
-              <td><span class="text-date2">-</span></td>
+              <td><span class="text-highscorename2">無</span></td>
+              <td><span class="text-time2">無</span></td>
+              <td><span class="text-date2">無</span></td>
             </tr>
             <tr>
-              <td><span class="text-highscorename3">從缺</span></td>
-              <td><span class="text-time3">-</span></td>
-              <td><span class="text-date3">-</span></td>
+              <td><span class="text-highscorename3">無</span></td>
+              <td><span class="text-time3">無</span></td>
+              <td><span class="text-date3">無</span></td>
             </tr>
           </table>
         </div>
@@ -240,35 +240,18 @@
     <script>
       let time = 0
       let timer
+      const datestr = moment().format('L')
 
       // 將localstorage資料取出
 
       const storage = JSON.parse(localStorage.cardgame || '[]')
-      console.log(storage)
-      // 最高分
-      let highscore = [
-        {
-          name: storage[0]?.name || '無',
-          time: storage[0]?.time || '無',
-          date: storage[0]?.date || '無'
-        },
-        {
-          name: storage[1]?.name || '無',
-          time: storage[1]?.time || '無',
-          date: storage[1]?.date || '無'
-        },
-        {
-          name: storage[2]?.name || '無',
-          time: storage[2]?.time || '無',
-          date: storage[2]?.date || '無'
-        }
-      ]
 
+      let highscore = []
       // 開始前先將記錄寫入
-      for (let i = 0; i < highscore.length; i++) {
-        $(`.text-highscorename${i + 1}`).text(highscore[i].name)
-        $(`.text-time${i + 1}`).text(highscore[i].time)
-        $(`.text-date${i + 1}`).text(highscore[i].date)
+      for (let i = 0; i < Object.keys(storage).length; i++) {
+        $(`.text-highscorename${i + 1}`).text(storage[i].name)
+        $(`.text-time${i + 1}`).text(storage[i].time)
+        $(`.text-date${i + 1}`).text(storage[i].date)
       }
 
       // 翻牌設定
@@ -356,75 +339,69 @@
               $('#game .card').remove()
               $('.start').removeClass('disabled')
 
-              console.log('a1' + $('.text-time1').text())
               // 第一個玩家
               if ($('.text-time1').text() === '無') {
-                console.log('a1' + $('.text-time1').text())
                 // 儲存通關時間
-                const datestr = moment().format('L')
-                highscore[0].time = time.toFixed(1)
-                highscore[0].name = prompt('名字')
-                highscore[0].date = datestr
+                highscore.push({
+                  name: `${prompt('名字')}`,
+                  time: `${time.toFixed(1)}`,
+                  date: `${datestr}`
+                })
                 console.log(highscore)
                 localStorage.setItem('cardgame', JSON.stringify(highscore))
               }
               // 第二個玩家
               else if ($('.text-time2').text() === '無') {
                 // 儲存通關時間
-                const datestr = moment().format('L')
-                highscore[1].time = time.toFixed(1)
-                highscore[1].name = prompt('名字')
-                highscore[1].date = datestr
-
+                highscore.push({
+                  name: `${prompt('名字')}`,
+                  time: `${time.toFixed(1)}`,
+                  date: `${datestr}`
+                })
+                console.log(highscore)
                 highscoresort = highscore.sort((a, b) => {
                   return a.time - b.time
                 })
-
                 localStorage.setItem('cardgame', JSON.stringify(highscoresort))
               }
               // 第三個玩家
               else if ($('.text-time3').text() === '無') {
                 // 儲存通關時間
-                const datestr = moment().format('L')
-                highscore[2].time = time.toFixed(1)
-                highscore[2].name = prompt('名字')
-                highscore[2].date = datestr
-
+                highscore.push({
+                  name: `${prompt('名字')}`,
+                  time: `${time.toFixed(1)}`,
+                  date: `${datestr}`
+                })
+                console.log(highscore)
                 highscoresort = highscore.sort((a, b) => {
                   return a.time - b.time
                 })
-
                 localStorage.setItem('cardgame', JSON.stringify(highscoresort))
               }
               // 三筆填滿後若有新紀錄才加入
               else if (time < parseInt($('.text-time3').text())) {
-                const datestr = moment().format('L')
-
-                highscore.push(`
-                  { name: ${prompt('名字')},
-          time: ${time.toFixed(1)} ,
-          date: ${datestr} `)
-
-                highscore = highscore.sort((a, b) => {
+                highscore.push({
+                  name: `${prompt('名字')}`,
+                  time: `${time.toFixed(1)}`,
+                  date: `${datestr}`
+                })
+                console.log(highscore)
+                highscoresort = highscore.sort((a, b) => {
                   return a.time - b.time
                 })
 
-                highscore.pop()
+                highscoresort.pop()
+                console.log(highscoresort)
 
-                console.log(highscore)
-
-                localStorage.setItem('cardgame', JSON.stringify(highscore))
+                localStorage.setItem('cardgame', JSON.stringify(highscoresort))
               }
-
-              console.log(highscore)
 
               // 寫入的迴圈
-              for (let i = 0; i < highscore.length; i++) {
-                $(`.text-highscorename${i + 1}`).text(highscore[i].name)
-                $(`.text-time${i + 1}`).text(highscore[i].time)
-                $(`.text-date${i + 1}`).text(highscore[i].date)
+              for (let i = 0; i < Object.keys(storage).length; i++) {
+                $(`.text-highscorename${i + 1}`).text(storage[i].name)
+                $(`.text-time${i + 1}`).text(storage[i].time)
+                $(`.text-date${i + 1}`).text(storage[i].date)
               }
-
               Swal.fire({
                 icon: 'success',
                 title: '老鼠已全部抓回',
